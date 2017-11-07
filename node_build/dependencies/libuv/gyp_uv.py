@@ -78,7 +78,11 @@ if __name__ == '__main__':
     if 'eclipse' not in args and 'ninja' not in args:
       args.extend(['-Goutput_dir=' + output_dir])
       args.extend(['--generator-output', output_dir])
-    (major, minor), is_clang = compiler_version()
+    print("Compiler tuple: " + str(compiler_version()))
+    try:
+      (major, minor), is_clang = compiler_version()
+    except ValueError:
+      (major, ), is_clang = compiler_version()
     args.append('-Dgcc_version=%d' % (10 * major + minor))
     args.append('-Dclang=%d' % int(is_clang))
 
