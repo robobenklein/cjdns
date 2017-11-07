@@ -35,6 +35,10 @@ def compiler_version():
   version = proc.communicate()[0].split('.')
   version = map(int, version[:2])
   version = tuple(version)
+  if len(version) == 1:
+    print("Editing compiler_version(): " + str(version) + " len " + str(len(version)))
+    version = (version[0], 0)
+    print("After edit: " + str(version) + " len " + str(len(version)))
   return (version, is_clang)
 
 
@@ -78,11 +82,7 @@ if __name__ == '__main__':
     if 'eclipse' not in args and 'ninja' not in args:
       args.extend(['-Goutput_dir=' + output_dir])
       args.extend(['--generator-output', output_dir])
-    print("Compiler tuple: " + str(compiler_version()))
-    try:
-      (major, minor), is_clang = compiler_version()
-    except ValueError:
-      (major, ), is_clang = compiler_version()
+    (major, minor), is_clang = compiler_version()
     args.append('-Dgcc_version=%d' % (10 * major + minor))
     args.append('-Dclang=%d' % int(is_clang))
 
